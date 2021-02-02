@@ -137,17 +137,15 @@
             </template>
           </tr>
           <template v-if="useDetailRow">
-            <transition :name="detailRowTransition" :key="`${item[trackBy] || itemIndex}-details-transition`">
-              <tr v-if="isVisibleDetailRow(item[trackBy])"
-                :key="`${item[trackBy] || itemIndex}-details`"
-                :class="[css.detailRowClass]"
-                @click="onDetailRowClick(item, $event)"
-              >
-                <td :colspan="countVisibleFields">
-                  <component :is="detailRowComponent" :row-data="item" :row-index="itemIndex"></component>
-                </td>
-              </tr>
-            </transition>
+            <tr v-if="isVisibleDetailRow(item[trackBy])"
+              :key="`${item[trackBy] || itemIndex}-details`"
+              :class="[css.detailRowClass]"
+              @click="onDetailRowClick(item, $event)"
+            >
+              <td :colspan="countVisibleFields">
+                <component :is="detailRowComponent" :row-data="item" :row-index="itemIndex"></component>
+              </td>
+            </tr>
           </template>
         </template>
         <template v-if="displayEmptyDataRow">
@@ -294,17 +292,15 @@
         </template>
       </tr>
       <template v-if="useDetailRow">
-        <transition :name="detailRowTransition" :key="`${item[trackBy] || itemIndex}-details-transition`">
-          <tr v-if="isVisibleDetailRow(item[trackBy])"
-            :key="`${item[trackBy] || itemIndex}-details`"
-            :class="[css.detailRowClass]"
-            @click="onDetailRowClick(item, $event)"
-          >
-            <td :colspan="countVisibleFields">
-              <component :is="detailRowComponent" :row-data="item" :row-index="itemIndex"></component>
-            </td>
-          </tr>
-        </transition>
+        <tr v-if="isVisibleDetailRow(item[trackBy])"
+          :key="`${item[trackBy] || itemIndex}-details`"
+          :class="[css.detailRowClass]"
+          @click="onDetailRowClick(item, $event)"
+        >
+          <td :colspan="countVisibleFields">
+            <component :is="detailRowComponent" :row-data="item" :row-index="itemIndex"></component>
+          </td>
+        </tr>
       </template>
     </template>
     <template v-if="displayEmptyDataRow">
@@ -449,10 +445,6 @@ export default {
       required: false
     },
     detailRowComponent: {
-      type: String,
-      default: ''
-    },
-    detailRowTransition: {
       type: String,
       default: ''
     },

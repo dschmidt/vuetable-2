@@ -3124,10 +3124,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       type: String,
       default: ''
     },
-    detailRowTransition: {
-      type: String,
-      default: ''
-    },
     trackBy: {
       type: String,
       default: 'id'
@@ -5613,12 +5609,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           }
         }
       })]] : _vm._e()]
-    })], 2), _vm._v(" "), (_vm.useDetailRow) ? [_c('transition', {
-      key: ((item[_vm.trackBy] || itemIndex) + "-details-transition"),
-      attrs: {
-        "name": _vm.detailRowTransition
-      }
-    }, [(_vm.isVisibleDetailRow(item[_vm.trackBy])) ? _c('tr', {
+    })], 2), _vm._v(" "), (_vm.useDetailRow) ? [(_vm.isVisibleDetailRow(item[_vm.trackBy])) ? _c('tr', {
       key: ((item[_vm.trackBy] || itemIndex) + "-details"),
       class: [_vm.css.detailRowClass],
       on: {
@@ -5636,7 +5627,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "row-data": item,
         "row-index": itemIndex
       }
-    })], 1)]) : _vm._e()])] : _vm._e()]
+    })], 1)]) : _vm._e()] : _vm._e()]
   }), _vm._v(" "), (_vm.displayEmptyDataRow) ? [_c('tr', {
     key: 'empty-row'
   }, [_c('td', {
@@ -5866,12 +5857,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           }
         }
       })]] : _vm._e()]
-    })], 2), _vm._v(" "), (_vm.useDetailRow) ? [_c('transition', {
-      key: ((item[_vm.trackBy] || itemIndex) + "-details-transition"),
-      attrs: {
-        "name": _vm.detailRowTransition
-      }
-    }, [(_vm.isVisibleDetailRow(item[_vm.trackBy])) ? _c('tr', {
+    })], 2), _vm._v(" "), (_vm.useDetailRow) ? [(_vm.isVisibleDetailRow(item[_vm.trackBy])) ? _c('tr', {
       key: ((item[_vm.trackBy] || itemIndex) + "-details"),
       class: [_vm.css.detailRowClass],
       on: {
@@ -5889,7 +5875,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "row-data": item,
         "row-index": itemIndex
       }
-    })], 1)]) : _vm._e()])] : _vm._e()]
+    })], 1)]) : _vm._e()] : _vm._e()]
   }), _vm._v(" "), (_vm.displayEmptyDataRow) ? [_c('tr', {
     key: 'empty-row'
   }, [_c('td', {
