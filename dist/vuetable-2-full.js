@@ -1,5 +1,5 @@
 /**
- * vuetable-2 v1.7.5
+ * vuetable-2 v1.7.6
  * https://github.com/ratiw/vuetable-2
  * Released under the MIT License.
  */
@@ -3115,11 +3115,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       type: [String, Function],
       default: ''
     },
-    detailRowComponent: {
-      type: String,
-      default: ''
+    tbodyTransitionProps: {
+      type: Object,
+      default: null,
+      required: false
     },
-    detailRowTransition: {
+    detailRowComponent: {
       type: String,
       default: ''
     },
@@ -3207,7 +3208,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   computed: {
     version: function version() {
-      return "1.7.5";
+      return "1.7.6";
     },
     useDetailRow: function useDetailRow() {
       if (this.tableData && this.tableData[0] && this.detailRowComponent !== '' && typeof this.tableData[0][this.trackBy] === 'undefined') {
@@ -3255,6 +3256,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     isFixedHeader: function isFixedHeader() {
       return this.tableHeight != null;
+    },
+    isTransitionGroup: function isTransitionGroup() {
+      return this.tbodyTransitionProps !== null;
+    },
+    tbodyComponent: function tbodyComponent() {
+      return this.isTransitionGroup ? 'transition-group' : 'tbody';
+    },
+    tbodyAttrs: function tbodyAttrs() {
+      if (!this.isTransitionGroup) {
+        return {};
+      }
+      return {
+        name: this.tbodyTransitionProps.name
+      };
     }
   },
   methods: {
@@ -5492,11 +5507,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "id": '_col_' + field.name
       }
     })] : _vm._e()]
-  })], 2), _vm._v(" "), _c('tbody', {
+  })], 2), _vm._v(" "), _c(_vm.tbodyComponent, _vm._b({
+    tag: "tbody",
     staticClass: "vuetable-body"
-  }, [_vm._l((_vm.tableData), function(item, itemIndex) {
+  }, 'tbody', _vm.tbodyAttrs, false), [_vm._l((_vm.tableData), function(item, itemIndex) {
     return [_c('tr', {
-      key: itemIndex,
+      key: item[_vm.trackBy] || itemIndex,
       class: _vm.onRowClass(item, itemIndex),
       attrs: {
         "item-index": itemIndex,
@@ -5593,12 +5609,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           }
         }
       })]] : _vm._e()]
-    })], 2), _vm._v(" "), (_vm.useDetailRow) ? [_c('transition', {
-      key: itemIndex,
-      attrs: {
-        "name": _vm.detailRowTransition
-      }
-    }, [(_vm.isVisibleDetailRow(item[_vm.trackBy])) ? _c('tr', {
+    })], 2), _vm._v(" "), (_vm.useDetailRow) ? [(_vm.isVisibleDetailRow(item[_vm.trackBy])) ? _c('tr', {
+      key: ((item[_vm.trackBy] || itemIndex) + "-details"),
       class: [_vm.css.detailRowClass],
       on: {
         "click": function($event) {
@@ -5615,8 +5627,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "row-data": item,
         "row-index": itemIndex
       }
-    })], 1)]) : _vm._e()])] : _vm._e()]
-  }), _vm._v(" "), (_vm.displayEmptyDataRow) ? [_c('tr', [_c('td', {
+    })], 1)]) : _vm._e()] : _vm._e()]
+  }), _vm._v(" "), (_vm.displayEmptyDataRow) ? [_c('tr', {
+    key: 'empty-row'
+  }, [_c('td', {
     staticClass: "vuetable-empty-result",
     attrs: {
       "colspan": _vm.countVisibleFields
@@ -5626,14 +5640,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })])] : _vm._e(), _vm._v(" "), (_vm.lessThanMinRows) ? _vm._l((_vm.blankRows), function(i) {
     return _c('tr', {
-      key: i,
+      key: ("blank-row-" + i),
       staticClass: "blank-row"
     }, [_vm._l((_vm.tableFields), function(field, fieldIndex) {
       return [(field.visible) ? _c('td', {
         key: fieldIndex
       }, [_vm._v(" ")]) : _vm._e()]
     })], 2)
-  }) : _vm._e()], 2)])])]) : _c('table', {
+  }) : _vm._e()], 2)], 1)])]) : _c('table', {
     class: ['vuetable', _vm.css.tableClass]
   }, [_c('thead', [_c('tr', [_vm._l((_vm.tableFields), function(field, fieldIndex) {
     return [(field.visible) ? [(_vm.isSpecialField(field.name)) ? [(_vm.extractName(field.name) === '__checkbox') ? _c('th', {
@@ -5724,11 +5738,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         }
       }
     })]] : _vm._e()]
-  })], 2)]), _vm._v(" "), _c('tbody', {
+  })], 2)]), _vm._v(" "), _c(_vm.tbodyComponent, _vm._b({
+    tag: "tbody",
     staticClass: "vuetable-body"
-  }, [_vm._l((_vm.tableData), function(item, itemIndex) {
+  }, 'tbody', _vm.tbodyAttrs, false), [_vm._l((_vm.tableData), function(item, itemIndex) {
     return [_c('tr', {
-      key: itemIndex,
+      key: item[_vm.trackBy] || itemIndex,
       class: _vm.onRowClass(item, itemIndex),
       attrs: {
         "item-index": itemIndex,
@@ -5842,12 +5857,8 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           }
         }
       })]] : _vm._e()]
-    })], 2), _vm._v(" "), (_vm.useDetailRow) ? [_c('transition', {
-      key: itemIndex,
-      attrs: {
-        "name": _vm.detailRowTransition
-      }
-    }, [(_vm.isVisibleDetailRow(item[_vm.trackBy])) ? _c('tr', {
+    })], 2), _vm._v(" "), (_vm.useDetailRow) ? [(_vm.isVisibleDetailRow(item[_vm.trackBy])) ? _c('tr', {
+      key: ((item[_vm.trackBy] || itemIndex) + "-details"),
       class: [_vm.css.detailRowClass],
       on: {
         "click": function($event) {
@@ -5864,8 +5875,10 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         "row-data": item,
         "row-index": itemIndex
       }
-    })], 1)]) : _vm._e()])] : _vm._e()]
-  }), _vm._v(" "), (_vm.displayEmptyDataRow) ? [_c('tr', [_c('td', {
+    })], 1)]) : _vm._e()] : _vm._e()]
+  }), _vm._v(" "), (_vm.displayEmptyDataRow) ? [_c('tr', {
+    key: 'empty-row'
+  }, [_c('td', {
     staticClass: "vuetable-empty-result",
     attrs: {
       "colspan": _vm.countVisibleFields
@@ -5875,14 +5888,14 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   })])] : _vm._e(), _vm._v(" "), (_vm.lessThanMinRows) ? _vm._l((_vm.blankRows), function(i) {
     return _c('tr', {
-      key: i,
+      key: ("blank-row-" + i),
       staticClass: "blank-row"
     }, [_vm._l((_vm.tableFields), function(field, fieldIndex) {
       return [(field.visible) ? _c('td', {
         key: fieldIndex
       }, [_vm._v(" ")]) : _vm._e()]
     })], 2)
-  }) : _vm._e()], 2)])
+  }) : _vm._e()], 2)], 1)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {

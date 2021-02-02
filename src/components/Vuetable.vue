@@ -70,10 +70,10 @@
           </template>
         </template>
       </colgroup>
-      <tbody v-cloak class="vuetable-body">
+      <tbody v-cloak class="vuetable-body" :is="tbodyComponent" v-bind="tbodyAttrs">
         <template v-for="(item, itemIndex) in tableData">
           <tr
-            :key="itemIndex"
+            :key="item[trackBy] || itemIndex"
             :item-index="itemIndex"
             :render="onRowChanged(item)"
             :class="onRowClass(item, itemIndex)"
@@ -137,25 +137,24 @@
             </template>
           </tr>
           <template v-if="useDetailRow">
-            <transition :name="detailRowTransition" :key="itemIndex">
-              <tr v-if="isVisibleDetailRow(item[trackBy])"
-                :class="[css.detailRowClass]"
-                @click="onDetailRowClick(item, $event)"
-              >
-                <td :colspan="countVisibleFields">
-                  <component :is="detailRowComponent" :row-data="item" :row-index="itemIndex"></component>
-                </td>
-              </tr>
-            </transition>
+            <tr v-if="isVisibleDetailRow(item[trackBy])"
+              :key="`${item[trackBy] || itemIndex}-details`"
+              :class="[css.detailRowClass]"
+              @click="onDetailRowClick(item, $event)"
+            >
+              <td :colspan="countVisibleFields">
+                <component :is="detailRowComponent" :row-data="item" :row-index="itemIndex"></component>
+              </td>
+            </tr>
           </template>
         </template>
         <template v-if="displayEmptyDataRow">
-          <tr>
+          <tr :key="'empty-row'">
             <td :colspan="countVisibleFields" class="vuetable-empty-result" v-html="noDataTemplate"></td>
           </tr>
         </template>
         <template v-if="lessThanMinRows">
-          <tr v-for="i in blankRows" class="blank-row" :key="i">
+          <tr v-for="i in blankRows" class="blank-row" :key="`blank-row-${i}`">
             <template v-for="(field, fieldIndex) in tableFields">
               <td v-if="field.visible" :key="fieldIndex">&nbsp;</td>
             </template>
@@ -217,10 +216,10 @@
       </template>
     </tr>
   </thead>
-  <tbody v-cloak class="vuetable-body">
+  <tbody v-cloak class="vuetable-body" :is="tbodyComponent" v-bind="tbodyAttrs">
     <template v-for="(item, itemIndex) in tableData">
       <tr
-        :key="itemIndex"
+        :key="item[trackBy] || itemIndex"
         :item-index="itemIndex"
         :render="onRowChanged(item)"
         :class="onRowClass(item, itemIndex)"
@@ -293,25 +292,24 @@
         </template>
       </tr>
       <template v-if="useDetailRow">
-        <transition :name="detailRowTransition" :key="itemIndex">
-          <tr v-if="isVisibleDetailRow(item[trackBy])"
-            :class="[css.detailRowClass]"
-            @click="onDetailRowClick(item, $event)"
-          >
-            <td :colspan="countVisibleFields">
-              <component :is="detailRowComponent" :row-data="item" :row-index="itemIndex"></component>
-            </td>
-          </tr>
-        </transition>
+        <tr v-if="isVisibleDetailRow(item[trackBy])"
+          :key="`${item[trackBy] || itemIndex}-details`"
+          :class="[css.detailRowClass]"
+          @click="onDetailRowClick(item, $event)"
+        >
+          <td :colspan="countVisibleFields">
+            <component :is="detailRowComponent" :row-data="item" :row-index="itemIndex"></component>
+          </td>
+        </tr>
       </template>
     </template>
     <template v-if="displayEmptyDataRow">
-      <tr>
+      <tr :key="'empty-row'">
         <td :colspan="countVisibleFields" class="vuetable-empty-result" v-html="noDataTemplate"></td>
       </tr>
     </template>
     <template v-if="lessThanMinRows">
-      <tr v-for="i in blankRows" class="blank-row" :key="i">
+      <tr v-for="i in blankRows" class="blank-row" :key="`blank-row-${i}`">
         <template v-for="(field, fieldIndex) in tableFields">
           <td v-if="field.visible" :key="fieldIndex">&nbsp;</td>
         </template>
@@ -441,11 +439,12 @@ export default {
       type: [String, Function],
       default: ''
     },
-    detailRowComponent: {
-      type: String,
-      default: ''
+    tbodyTransitionProps: {
+      type: Object,
+      default: null,
+      required: false
     },
-    detailRowTransition: {
+    detailRowComponent: {
       type: String,
       default: ''
     },
@@ -578,6 +577,20 @@ export default {
     },
     isFixedHeader () {
       return this.tableHeight != null
+    },
+    isTransitionGroup() {
+      return this.tbodyTransitionProps !== null
+    },
+    tbodyComponent () {
+      return this.isTransitionGroup ? 'transition-group' : 'tbody'
+    },
+    tbodyAttrs () {
+      if (!this.isTransitionGroup) {
+        return {}
+      }
+      return {
+        name: this.tbodyTransitionProps.name
+      }
     }
   },
   methods: {
