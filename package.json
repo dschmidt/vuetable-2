@@ -1,6 +1,6 @@
 {
   "name": "@kulmann/vuetable-2",
-  "version": "1.7.6",
+  "version": "1.8.0",
   "description": "FORKED - Datatable component for Vue 2.x",
   "main": "dist/vuetable-2.js",
   "license": "MIT",
