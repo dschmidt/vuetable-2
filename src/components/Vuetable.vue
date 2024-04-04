@@ -320,8 +320,6 @@
 </template>
 
 <script>
-import axios from 'axios'
-
 export default {
   props: {
     fields: {
@@ -753,9 +751,7 @@ export default {
       ).catch(() => failed())
     },
     fetch (apiUrl, httpOptions) {
-      return this.httpFetch
-          ? this.httpFetch(apiUrl, httpOptions)
-          : axios[this.httpMethod](apiUrl, httpOptions)
+      return this.httpFetch(apiUrl, httpOptions)
     },
     loadSuccess (response) {
       this.fireEvent('load-success', response)
